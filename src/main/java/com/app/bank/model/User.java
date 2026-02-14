@@ -26,7 +26,6 @@ public class User {
     private String gender;
     private String address;
     private String stateOfOrigin;
-    @NonNull
     private String accountNumber;
     private BigDecimal accountBalance;
     @NonNull
