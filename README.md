@@ -61,6 +61,7 @@ It is designed with scalability, clean architecture, and security in mind — ma
 ---
 
 ## 🏗️ Project Structure
+```
 Transaction-Bank-app-
 │
 ├── src/main/java/
@@ -80,6 +81,8 @@ Transaction-Bank-app-
 │
 ├── pom.xml
 └── README.md
+
+```
 
 
 ---
@@ -201,5 +204,6 @@ GitHub: https://github.com/ludovicfranck
 ⭐ If you like this project, don't forget to star the repository!
 
 ---
+
 
 
