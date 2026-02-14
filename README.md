@@ -19,7 +19,7 @@ It is designed with scalability, clean architecture, and security in mind — ma
 <p align="left">
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" alt="Java" width="45"/>
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/spring/spring-original.svg" alt="Spring Boot" width="45"/>
-  <img src="https://www.google.com/url?sa=t&source=web&rct=j&url=https%3A%2F%2Fgithub.com%2Fdevicons%2Fdevicon%2Fissues%2F2205&ved=0CBYQjRxqFwoTCJjX-KPv15IDFQAAAAAdAAAAABAI&opi=89978449" width="45"/>
+  <!-- <img src="https:// width="45"/> -->
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg" alt="MySQL" width="45"/>
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/maven/maven-original.svg" alt="Maven" width="45"/>
 </p>
@@ -201,4 +201,5 @@ GitHub: https://github.com/ludovicfranck
 ⭐ If you like this project, don't forget to star the repository!
 
 ---
+
 
