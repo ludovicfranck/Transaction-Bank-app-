@@ -5,6 +5,21 @@ spring:
   application:
     name: bank
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: franckludovic351@gmail.com
+    password: autskzixegitbiij
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtp
+    default-encoding: UTF-8
+    test-connection: true
+
   datasource:
     url: jdbc:mysql://localhost:3306/db_bank
     username: root

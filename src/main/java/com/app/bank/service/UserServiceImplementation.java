@@ -2,11 +2,11 @@ package com.app.bank.service;
 
 import com.app.bank.dto.AccountInfo;
 import com.app.bank.dto.BankResponse;
+import com.app.bank.dto.EmailDetails;
 import com.app.bank.dto.UserRequest;
 import com.app.bank.model.User;
 import com.app.bank.repository.UserRepository;
 import com.app.bank.utils.AccountUtils;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +16,12 @@ import java.math.BigDecimal;
 public class UserServiceImplementation implements UserService{
 
     private final UserRepository userRepository;
+    private final EmailService emailService ;
 
     @Autowired
-    public UserServiceImplementation(UserRepository userRepository){
+    public UserServiceImplementation(UserRepository userRepository , EmailServiceImplementation emailServiceImplementation){
         this.userRepository = userRepository ;
+        this.emailService = emailServiceImplementation;
     }
 
    // create an account  = save a new user into the database ...
@@ -49,6 +51,15 @@ public class UserServiceImplementation implements UserService{
                 .build();
 
         User savedUser = userRepository.save(newUser);
+        // ---------- code in charge to inform the creation of his bank account !
+        EmailDetails emailDetails = EmailDetails.builder()
+                .recipient(savedUser.getEmail())
+                    .subject("BANK ACCOUNT CREATED !")
+                    .messageBody("Your account was successfully created !\n Your Account Details :\n" +
+                        "\tAccount Name : " + savedUser.getFirstName() + " " + savedUser.getLastName() + "\n " +
+                        "\tYour Account Number : " + savedUser.getAccountNumber())
+                .build();
+                emailService.sendEmailAlert(emailDetails);
 
         return BankResponse.builder()
                 .responseCode(AccountUtils.ACCOUNT_CREATION_CODE)
