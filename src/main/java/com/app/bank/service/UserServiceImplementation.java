@@ -1,9 +1,6 @@
 package com.app.bank.service;
 
-import com.app.bank.dto.AccountInfo;
-import com.app.bank.dto.BankResponse;
-import com.app.bank.dto.EmailDetails;
-import com.app.bank.dto.UserRequest;
+import com.app.bank.dto.*;
 import com.app.bank.model.User;
 import com.app.bank.repository.UserRepository;
 import com.app.bank.utils.AccountUtils;
@@ -71,6 +68,40 @@ public class UserServiceImplementation implements UserService{
                         .build())
                 .build();
 
+
+    }
+
+    @Override
+    public BankResponse balanceEnquiry(EnquiryRequest enquiryRequest) {
+        // check if the provided accountNumber exists in the database
+        Boolean isAccountNumberExist = userRepository.existsByAccountNumber(enquiryRequest.getAccountNumber());
+        if (!isAccountNumberExist){
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.ACCOUNT_NOT_EXISTS_CODE)
+                    .responseMessage(AccountUtils.ACCOUNT_NOT_EXISTS_MESSAGE)
+                    .accountInfo(null)
+                    .build();
+        }
+        User foundUser = userRepository.findByAccountNumber(enquiryRequest.getAccountNumber());
+        return BankResponse.builder()
+                .responseCode(AccountUtils.ACCOUNT_FOUND_CODE)
+                .responseMessage(AccountUtils.ACCOUNT_FOUND_MESSAGE)
+                .accountInfo(AccountInfo.builder()
+                        .accountName(foundUser.getFirstName() + " " + foundUser.getLastName())
+                        .accountBalance(foundUser.getAccountBalance())
+                        .accountNumber(foundUser.getAccountNumber())
+                        .build())
+                .build();
+    }
+
+    @Override
+    public String nameEnquiry(EnquiryRequest enquiryRequest) {
+        Boolean isAccountNumberExist = userRepository.existsByAccountNumber(enquiryRequest.getAccountNumber());
+        if (!isAccountNumberExist){
+            return AccountUtils.ACCOUNT_NOT_EXISTS_MESSAGE;
+        }
+        User foundUser = userRepository.findByAccountNumber(enquiryRequest.getAccountNumber());
+        return foundUser.getFirstName() + " " + foundUser.getLastName();
 
     }
 }
