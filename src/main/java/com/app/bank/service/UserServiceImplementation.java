@@ -104,4 +104,62 @@ public class UserServiceImplementation implements UserService{
         return foundUser.getFirstName() + " " + foundUser.getLastName();
 
     }
+
+    // to remove a special amount in the account's user !
+    // resultAmount = AccountBalance - accountAmount.getAmount ;
+    @Override
+    public BankResponse creditAccount(AccountAmount accountAmount) {
+        Boolean isAccountNumberExist = userRepository.existsByAccountNumber(accountAmount.getAccountNumber());
+        if(!isAccountNumberExist){
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.ACCOUNT_NOT_EXISTS_CODE)
+                    .responseMessage(AccountUtils.ACCOUNT_NOT_EXISTS_MESSAGE)
+                    .accountInfo(null)
+                    .build();
+        }
+        User foundUser = userRepository.findByAccountNumber(accountAmount.getAccountNumber());
+        BigDecimal resultBalance = foundUser.getAccountBalance().subtract(accountAmount.getAmount());
+        foundUser.setAccountBalance(resultBalance);
+        userRepository.save(foundUser);
+        return BankResponse.builder()
+                .responseCode(AccountUtils.ACCOUNT_FOUND_CODE)
+                .responseMessage(AccountUtils.ACCOUNT_FOUND_MESSAGE)
+                .accountInfo(AccountInfo.builder()
+                        .accountName(foundUser.getFirstName() + " " + foundUser.getLastName())
+                        .accountBalance(foundUser.getAccountBalance())
+                        .accountNumber(foundUser.getAccountNumber())
+                        .build())
+                .build();
+    }
+
+
+    // Add an amount in the account's user !
+    // resultAmount = AccountBalance + accountAmount.getAmount() ;
+    @Override
+    public BankResponse debitAccount(AccountAmount accountAmount) {
+        Boolean isAccountNumberExists = userRepository.existsByAccountNumber(accountAmount.getAccountNumber());
+        if (!isAccountNumberExists){
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.ACCOUNT_NOT_EXISTS_CODE)
+                    .responseMessage(AccountUtils.ACCOUNT_NOT_EXISTS_MESSAGE)
+                    .accountInfo(null)
+                    .build();
+        }
+        User foundUser  = userRepository.findByAccountNumber(accountAmount.getAccountNumber());
+        BigDecimal resultBalance = foundUser.getAccountBalance().add(accountAmount.getAmount());
+        foundUser.setAccountBalance(resultBalance);
+        userRepository.save(foundUser);
+        return BankResponse.builder()
+                .responseCode(AccountUtils.ACCOUNT_EXISTS_CODE)
+                .responseMessage(AccountUtils.ACCOUNT_EXISTS_MESSAGE)
+                .accountInfo(AccountInfo.builder()
+                        .accountName(foundUser.getFirstName() + " " + foundUser.getLastName())
+                        .accountNumber(foundUser.getAccountNumber())
+                        .accountBalance(foundUser.getAccountBalance())
+                        .build())
+                .build();
+    }
+
+
+
 }
