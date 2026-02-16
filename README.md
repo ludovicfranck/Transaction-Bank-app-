@@ -144,7 +144,7 @@ mvn clean install
 mvn spring-boot:run
 
 🌐 API Base URL
-http://localhost:8080
+http://localhost:8080/api/user
 
 
 You can test endpoints using:
@@ -204,6 +204,7 @@ GitHub: https://github.com/ludovicfranck
 ⭐ If you like this project, don't forget to star the repository!
 
 ---
+
 
 
 
