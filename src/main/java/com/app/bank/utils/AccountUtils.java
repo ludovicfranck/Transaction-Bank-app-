@@ -20,6 +20,10 @@ public class AccountUtils {
     public static final String ACCOUNT_NOT_EXISTS_MESSAGE = "The Account Number provided doesn't exist !"; // the specified message when the accountNumber doesn't exist
     public static final String ACCOUNT_FOUND_CODE = "004";
     public static final String ACCOUNT_FOUND_MESSAGE = "The Account Number provided exists";
+    public static final String ACCOUNT_INSUFFICIENT_BALANCE_CODE = "005";
+    public static final String ACCOUNT_INSUFFUCIENT_BALANCE_MESSAGE = "Your Balance is Insufficient for this operation !";
+    public static final String ACCOUNT_SUFFICIENT_BALANCE_CODE = "006";
+    public static final String ACCOUNT_SUFFICIENT_BALANCE_MESSAGE = "Your Account Balance is sufficient to perform this operation !";
 
     public static String generateAccountNumber(){
 

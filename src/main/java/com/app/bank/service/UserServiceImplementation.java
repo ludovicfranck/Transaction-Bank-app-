@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 @Service
 public class UserServiceImplementation implements UserService{
@@ -118,7 +119,7 @@ public class UserServiceImplementation implements UserService{
                     .build();
         }
         User foundUser = userRepository.findByAccountNumber(requestAmount.getAccountNumber());
-        BigDecimal resultBalance = foundUser.getAccountBalance().subtract(requestAmount.getAmount());
+        BigDecimal resultBalance = foundUser.getAccountBalance().add(requestAmount.getAmount());
         foundUser.setAccountBalance(resultBalance);
         userRepository.save(foundUser);
         return BankResponse.builder()
@@ -145,19 +146,38 @@ public class UserServiceImplementation implements UserService{
                     .accountInfo(null)
                     .build();
         }
-        User foundUser  = userRepository.findByAccountNumber(requestAmount.getAccountNumber());
-        BigDecimal resultBalance = foundUser.getAccountBalance().add(requestAmount.getAmount());
-        foundUser.setAccountBalance(resultBalance);
-        userRepository.save(foundUser);
-        return BankResponse.builder()
-                .responseCode(AccountUtils.ACCOUNT_EXISTS_CODE)
-                .responseMessage(AccountUtils.ACCOUNT_EXISTS_MESSAGE)
-                .accountInfo(AccountInfo.builder()
-                        .accountName(foundUser.getFirstName() + " " + foundUser.getLastName())
-                        .accountNumber(foundUser.getAccountNumber())
-                        .accountBalance(foundUser.getAccountBalance())
-                        .build())
-                .build();
+        else{
+            User foundUser  = userRepository.findByAccountNumber(requestAmount.getAccountNumber());
+            BigInteger availableBalance = foundUser.getAccountBalance().toBigInteger();
+            BigInteger amountBigInteger = requestAmount.getAmount().toBigInteger();
+            // available_balance < amountToWithdraw
+            if (availableBalance.intValue() < amountBigInteger.intValue()){
+                return BankResponse.builder()
+                        .responseCode(AccountUtils.ACCOUNT_INSUFFICIENT_BALANCE_CODE)
+                        .responseMessage(AccountUtils.ACCOUNT_INSUFFUCIENT_BALANCE_MESSAGE)
+                        .accountInfo(AccountInfo.builder()
+                                .accountName(foundUser.getFirstName() + " " + foundUser.getLastName())
+                                .accountBalance(foundUser.getAccountBalance())
+                                .accountNumber(foundUser.getAccountNumber())
+                                .build())
+                        .build();
+            }
+            else{
+                BigDecimal resultBalance = foundUser.getAccountBalance().subtract(requestAmount.getAmount());
+                foundUser.setAccountBalance(resultBalance);
+                userRepository.save(foundUser);
+                return BankResponse.builder()
+                        .responseCode(AccountUtils.ACCOUNT_SUFFICIENT_BALANCE_CODE)
+                        .responseMessage(AccountUtils.ACCOUNT_SUFFICIENT_BALANCE_MESSAGE)
+                        .accountInfo(AccountInfo.builder()
+                                .accountName(foundUser.getFirstName() + " " + foundUser.getLastName())
+                                .accountBalance(foundUser.getAccountBalance())
+                                .accountNumber(foundUser.getAccountNumber())
+                                .build())
+                        .build();
+            }
+        }
+
     }
 
 
