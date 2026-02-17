@@ -108,8 +108,8 @@ public class UserServiceImplementation implements UserService{
     // to remove a special amount in the account's user !
     // resultAmount = AccountBalance - accountAmount.getAmount ;
     @Override
-    public BankResponse creditAccount(AccountAmount accountAmount) {
-        Boolean isAccountNumberExist = userRepository.existsByAccountNumber(accountAmount.getAccountNumber());
+    public BankResponse creditAccount(RequestAmount requestAmount) {
+        Boolean isAccountNumberExist = userRepository.existsByAccountNumber(requestAmount.getAccountNumber());
         if(!isAccountNumberExist){
             return BankResponse.builder()
                     .responseCode(AccountUtils.ACCOUNT_NOT_EXISTS_CODE)
@@ -117,8 +117,8 @@ public class UserServiceImplementation implements UserService{
                     .accountInfo(null)
                     .build();
         }
-        User foundUser = userRepository.findByAccountNumber(accountAmount.getAccountNumber());
-        BigDecimal resultBalance = foundUser.getAccountBalance().subtract(accountAmount.getAmount());
+        User foundUser = userRepository.findByAccountNumber(requestAmount.getAccountNumber());
+        BigDecimal resultBalance = foundUser.getAccountBalance().subtract(requestAmount.getAmount());
         foundUser.setAccountBalance(resultBalance);
         userRepository.save(foundUser);
         return BankResponse.builder()
@@ -136,8 +136,8 @@ public class UserServiceImplementation implements UserService{
     // Add an amount in the account's user !
     // resultAmount = AccountBalance + accountAmount.getAmount() ;
     @Override
-    public BankResponse debitAccount(AccountAmount accountAmount) {
-        Boolean isAccountNumberExists = userRepository.existsByAccountNumber(accountAmount.getAccountNumber());
+    public BankResponse debitAccount(RequestAmount requestAmount) {
+        Boolean isAccountNumberExists = userRepository.existsByAccountNumber(requestAmount.getAccountNumber());
         if (!isAccountNumberExists){
             return BankResponse.builder()
                     .responseCode(AccountUtils.ACCOUNT_NOT_EXISTS_CODE)
@@ -145,8 +145,8 @@ public class UserServiceImplementation implements UserService{
                     .accountInfo(null)
                     .build();
         }
-        User foundUser  = userRepository.findByAccountNumber(accountAmount.getAccountNumber());
-        BigDecimal resultBalance = foundUser.getAccountBalance().add(accountAmount.getAmount());
+        User foundUser  = userRepository.findByAccountNumber(requestAmount.getAccountNumber());
+        BigDecimal resultBalance = foundUser.getAccountBalance().add(requestAmount.getAmount());
         foundUser.setAccountBalance(resultBalance);
         userRepository.save(foundUser);
         return BankResponse.builder()

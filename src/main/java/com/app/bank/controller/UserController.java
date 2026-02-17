@@ -1,8 +1,8 @@
 package com.app.bank.controller;
 
-import com.app.bank.dto.AccountAmount;
 import com.app.bank.dto.BankResponse;
 import com.app.bank.dto.EnquiryRequest;
+import com.app.bank.dto.RequestAmount;
 import com.app.bank.dto.UserRequest;
 import com.app.bank.service.UserService;
 import com.app.bank.service.UserServiceImplementation;
@@ -36,13 +36,13 @@ public class UserController {
 
     @GetMapping("/creditAccountBalance")
     @ResponseBody
-    public BankResponse creditAnAccount(@RequestBody AccountAmount accountAmount){
-        return  userService.creditAccount(accountAmount);
+    public BankResponse creditAnAccount(@RequestBody RequestAmount requestAmount){
+        return  userService.creditAccount(requestAmount);
     }
     @GetMapping("/debitAccountBalance")
     @ResponseBody
-    public BankResponse debitAnAccount(@RequestBody AccountAmount accountAmount){
-        return userService.debitAccount(accountAmount);
+    public BankResponse debitAnAccount(@RequestBody RequestAmount requestAmount){
+        return userService.debitAccount(requestAmount);
     }
 
 }
