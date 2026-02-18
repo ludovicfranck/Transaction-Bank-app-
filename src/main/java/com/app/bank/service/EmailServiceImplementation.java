@@ -1,6 +1,7 @@
 package com.app.bank.service;
 
 import com.app.bank.dto.EmailDetails;
+import com.app.bank.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +25,7 @@ public class EmailServiceImplementation implements EmailService {
     }
 
     @Override
-    public void sendEmailAlert(EmailDetails emailDetails) {
+    public void sendEmailAlert(EmailDetails emailDetails) throws UserNotFoundException {
         try{
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom(senderEmail);
@@ -35,7 +36,7 @@ public class EmailServiceImplementation implements EmailService {
             javaMailSender.send(mailMessage);
             log.info("Mail sent successfully ! ");
         }catch (MailException exception){
-            throw new RuntimeException(exception);
+            throw new UserNotFoundException("The User provided wasn't found in the database !");
         }
     }
 }

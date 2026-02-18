@@ -1,6 +1,7 @@
 package com.app.bank.service;
 
 import com.app.bank.dto.*;
+import com.app.bank.exception.UserNotFoundException;
 import com.app.bank.model.User;
 import com.app.bank.repository.UserRepository;
 import com.app.bank.utils.AccountUtils;
@@ -24,7 +25,7 @@ public class UserServiceImplementation implements UserService{
 
    // create an account  = save a new user into the database ...
     @Override
-    public BankResponse createAccount(UserRequest userRequest) {
+    public BankResponse createAccount(UserRequest userRequest) throws UserNotFoundException {
         // check if a user already has an account ...
         if (userRepository.existsByEmail(userRequest.getEmail())){
              return BankResponse.builder()
