@@ -40,6 +40,7 @@ It is designed with scalability, clean architecture, and security in mind — ma
 - Retrieve account details
 - View account balance
 - Manage customer information
+- Transaction Reporting feature
 
 ### 💸 Transaction System
 - Secure money transfers between accounts
@@ -204,6 +205,7 @@ GitHub: https://github.com/ludovicfranck
 ⭐ If you like this project, don't forget to star the repository!
 
 ---
+
 
 
 
