@@ -1,9 +1,6 @@
 package com.app.bank.service;
 
-import com.app.bank.dto.BankResponse;
-import com.app.bank.dto.EnquiryRequest;
-import com.app.bank.dto.RequestAmount;
-import com.app.bank.dto.UserRequest;
+import com.app.bank.dto.*;
 import com.app.bank.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -15,4 +12,5 @@ public interface UserService {
     // remove an amount in a Bank Account ...
     BankResponse creditAccount(RequestAmount requestAmount);
     BankResponse debitAccount(RequestAmount requestAmount);
+    BankResponse transferAmount(TransferRequest transferRequest) throws UserNotFoundException;
 }

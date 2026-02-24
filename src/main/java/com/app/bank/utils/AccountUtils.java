@@ -24,6 +24,10 @@ public class AccountUtils {
     public static final String ACCOUNT_INSUFFUCIENT_BALANCE_MESSAGE = "Your Balance is Insufficient for this operation !";
     public static final String ACCOUNT_SUFFICIENT_BALANCE_CODE = "006";
     public static final String ACCOUNT_SUFFICIENT_BALANCE_MESSAGE = "Your Account Balance is sufficient to perform this operation !";
+    public static final String ACCOUNT_SOURCE_NUMBER_NOT_FOUND_CODE = "007";
+    public static final String ACCOUNT_SOURCE_NUMBER_NOT_FOUND_MESSAGE = "The Source  Account Number provided for the transfer doesn't exist !";
+    public static final String ACCOUNT_DESTINATION_NUMBER_FOUND_CODE = "008";
+    public static final String ACCOUNT_DESTINATION_NUMBER_FOUND_MESSAGE = "The Account Number provided for the account to credit was successfully find !";
 
     public static String generateAccountNumber(){
 

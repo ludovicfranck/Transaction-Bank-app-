@@ -181,6 +181,90 @@ public class UserServiceImplementation implements UserService{
 
     }
 
+    @Override
+    public BankResponse transferAmount(TransferRequest transferRequest) throws UserNotFoundException {
+        // step 1 : get the account to debit ( check if the account exists )
+        // step 2 : check if the debited's amount is not more than the current Balance of the account
+        // step 3 : debit the account ( subtract the current balance )
+        // step 4 : get the account to credit (check if the account exists )
+        // step 5 : credit the account ( add the current balance of the account )
+
+        Boolean isSourceAccountNumberExists = userRepository.existsByAccountNumber(transferRequest.getSourceAccountNumber());
+        if (!isSourceAccountNumberExists){
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.ACCOUNT_SOURCE_NUMBER_NOT_FOUND_CODE)
+                    .responseMessage(AccountUtils.ACCOUNT_SOURCE_NUMBER_NOT_FOUND_MESSAGE)
+                    .accountInfo(null)
+                    .build();
+        }
+        else { // step 2 continuation ...
+            User findSenderUser = userRepository.findByAccountNumber(transferRequest.getSourceAccountNumber());
+            BigDecimal currentBalance = findSenderUser.getAccountBalance();
+            if (currentBalance.compareTo(transferRequest.getAmount()) < 0 ){
+                // can't transfer because the current balance is less than the amount to transfer ...
+                return BankResponse.builder()
+                        .responseCode(AccountUtils.ACCOUNT_SUFFICIENT_BALANCE_CODE)
+                        .responseMessage(AccountUtils.ACCOUNT_SUFFICIENT_BALANCE_MESSAGE)
+                        .accountInfo(AccountInfo.builder()
+                                .accountName(findSenderUser.getFirstName() + " " + findSenderUser.getLastName())
+                                .accountBalance(findSenderUser.getAccountBalance())
+                                .accountNumber(findSenderUser.getAccountNumber())
+                                .build())
+                        .build();
+            }
+            else{ // the current balance is greater than the amount to transfer ...
+                // debiting process ...
+                // step 4 implementation
+                Boolean isDestinationAccountNumberExists = userRepository.existsByAccountNumber(transferRequest.getDestinationAccountNumber());
+                if (!isDestinationAccountNumberExists){
+                    return BankResponse.builder()
+                            .responseCode(AccountUtils.ACCOUNT_NOT_EXISTS_CODE)
+                            .responseMessage(AccountUtils.ACCOUNT_NOT_EXISTS_MESSAGE)
+                            .accountInfo(null)
+                            .build();
+
+                }
+                // else's block ....
+                BigDecimal newBalanceAfterDebit = findSenderUser.getAccountBalance().subtract(transferRequest.getAmount());
+                findSenderUser.setAccountBalance(newBalanceAfterDebit);
+                userRepository.save(findSenderUser);
+                User receiverTransferUser = userRepository.findByAccountNumber(transferRequest.getDestinationAccountNumber());
+                BigDecimal newBalanceAfterCredit = receiverTransferUser.getAccountBalance().add(transferRequest.getAmount());
+                receiverTransferUser.setAccountBalance(newBalanceAfterCredit);
+                userRepository.save(receiverTransferUser);
+
+                // send Email Alert after the Debit Operation of the account !
+                EmailDetails emailDetailsDebit = EmailDetails.builder()
+                        .subject("DEBIT ALERT !")
+                        .recipient(findSenderUser.getEmail())
+                        .messageBody("The Sum of : " + transferRequest.getAmount() + " has been deducted from your Account \n" +
+                                "Your Current Balance is : " + findSenderUser.getAccountBalance())
+                        .build();
+
+                emailService.sendEmailAlert(emailDetailsDebit);
+
+                // send Email Alert after the Credit Operation of the account !
+                EmailDetails emailDetailsCredit = EmailDetails.builder()
+                        .subject("CREDIT ALERT !")
+                        .recipient(receiverTransferUser.getEmail())
+                        .messageBody("The Sum of : " + transferRequest.getAmount() + " has been sent from your Account \n" +
+                                "Your current Balance is : " + receiverTransferUser.getAccountBalance())
+                        .build();
+                emailService.sendEmailAlert(emailDetailsCredit);
+                // return the final BankResponse after the transfer Operation !
+                return BankResponse.builder()
+                        .responseCode(AccountUtils.ACCOUNT_DESTINATION_NUMBER_FOUND_CODE)
+                        .responseMessage(AccountUtils.ACCOUNT_DESTINATION_NUMBER_FOUND_MESSAGE)
+                        .accountInfo(AccountInfo.builder()
+                                .accountName(receiverTransferUser.getFirstName() + " " + receiverTransferUser.getLastName())
+                                .accountBalance(receiverTransferUser.getAccountBalance())
+                                .accountNumber(receiverTransferUser.getAccountNumber())
+                                .build())
+                        .build() ;
+            }
+        }
+
+    }
 
 
 }

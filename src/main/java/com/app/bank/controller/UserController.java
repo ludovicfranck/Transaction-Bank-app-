@@ -1,9 +1,7 @@
 package com.app.bank.controller;
 
-import com.app.bank.dto.BankResponse;
-import com.app.bank.dto.EnquiryRequest;
-import com.app.bank.dto.RequestAmount;
-import com.app.bank.dto.UserRequest;
+import com.app.bank.dto.*;
+import com.app.bank.exception.UserNotFoundException;
 import com.app.bank.service.UserService;
 import com.app.bank.service.UserServiceImplementation;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +18,7 @@ public class UserController {
 
     @PostMapping
     @ResponseBody
-    public BankResponse createAnAccount(@RequestBody UserRequest userRequest){
+    public BankResponse createAnAccount(@RequestBody UserRequest userRequest) throws UserNotFoundException {
         return userService.createAccount(userRequest);
     }
     @GetMapping("/balanceEnquiry")
@@ -43,6 +41,12 @@ public class UserController {
     @ResponseBody
     public BankResponse debitAnAccount(@RequestBody RequestAmount requestAmount){
         return userService.debitAccount(requestAmount);
+    }
+
+    @PostMapping("/transferAmount")
+    @ResponseBody
+    public BankResponse transferAmount(@RequestBody TransferRequest transferRequest){
+        return userService.transferAmount(transferRequest);
     }
 
 }
