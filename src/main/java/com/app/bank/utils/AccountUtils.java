@@ -21,7 +21,7 @@ public class AccountUtils {
     public static final String ACCOUNT_FOUND_CODE = "004";
     public static final String ACCOUNT_FOUND_MESSAGE = "The Account Number provided exists";
     public static final String ACCOUNT_INSUFFICIENT_BALANCE_CODE = "005";
-    public static final String ACCOUNT_INSUFFUCIENT_BALANCE_MESSAGE = "Your Balance is Insufficient for this operation !";
+    public static final String ACCOUNT_INSUFFICIENT_BALANCE_MESSAGE = "Your Balance is Insufficient for this operation !";
     public static final String ACCOUNT_SUFFICIENT_BALANCE_CODE = "006";
     public static final String ACCOUNT_SUFFICIENT_BALANCE_MESSAGE = "Your Account Balance is sufficient to perform this operation !";
     public static final String ACCOUNT_SOURCE_NUMBER_NOT_FOUND_CODE = "007";

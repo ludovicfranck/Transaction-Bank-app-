@@ -155,7 +155,7 @@ public class UserServiceImplementation implements UserService{
             if (availableBalance.intValue() < amountBigInteger.intValue()){
                 return BankResponse.builder()
                         .responseCode(AccountUtils.ACCOUNT_INSUFFICIENT_BALANCE_CODE)
-                        .responseMessage(AccountUtils.ACCOUNT_INSUFFUCIENT_BALANCE_MESSAGE)
+                        .responseMessage(AccountUtils.ACCOUNT_INSUFFICIENT_BALANCE_MESSAGE)
                         .accountInfo(AccountInfo.builder()
                                 .accountName(foundUser.getFirstName() + " " + foundUser.getLastName())
                                 .accountBalance(foundUser.getAccountBalance())
@@ -203,13 +203,9 @@ public class UserServiceImplementation implements UserService{
             if (currentBalance.compareTo(transferRequest.getAmount()) < 0 ){
                 // can't transfer because the current balance is less than the amount to transfer ...
                 return BankResponse.builder()
-                        .responseCode(AccountUtils.ACCOUNT_SUFFICIENT_BALANCE_CODE)
-                        .responseMessage(AccountUtils.ACCOUNT_SUFFICIENT_BALANCE_MESSAGE)
-                        .accountInfo(AccountInfo.builder()
-                                .accountName(findSenderUser.getFirstName() + " " + findSenderUser.getLastName())
-                                .accountBalance(findSenderUser.getAccountBalance())
-                                .accountNumber(findSenderUser.getAccountNumber())
-                                .build())
+                        .responseCode(AccountUtils.ACCOUNT_INSUFFICIENT_BALANCE_CODE)
+                        .responseMessage(AccountUtils.ACCOUNT_INSUFFICIENT_BALANCE_MESSAGE)
+                        .accountInfo(null)
                         .build();
             }
             else{ // the current balance is greater than the amount to transfer ...
@@ -237,7 +233,7 @@ public class UserServiceImplementation implements UserService{
                 EmailDetails emailDetailsDebit = EmailDetails.builder()
                         .subject("DEBIT ALERT !")
                         .recipient(findSenderUser.getEmail())
-                        .messageBody("The Sum of : " + transferRequest.getAmount() + " has been deducted from your Account \n" +
+                        .messageBody("The Sum of : $" + transferRequest.getAmount() + " has been deducted from your Account \n" +
                                 "Your Current Balance is : " + "$" + findSenderUser.getAccountBalance())
                         .build();
 
