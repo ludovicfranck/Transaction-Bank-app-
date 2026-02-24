@@ -248,7 +248,8 @@ public class UserServiceImplementation implements UserService{
                         .subject("CREDIT ALERT !")
                         .recipient(receiverTransferUser.getEmail())
                         .messageBody("The Sum of : " + transferRequest.getAmount() + " has been sent from your Account \n" +
-                                "Your current Balance is : " + "$" + receiverTransferUser.getAccountBalance())
+                                "Your current Balance is : " + "$" + receiverTransferUser.getAccountBalance() + "\n" +
+                                "Sender name : " + findSenderUser.getFirstName() + " " + findSenderUser.getLastName())
                         .build();
                 emailService.sendEmailAlert(emailDetailsCredit);
                 // return the final BankResponse after the transfer Operation !
