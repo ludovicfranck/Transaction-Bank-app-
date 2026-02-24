@@ -45,7 +45,7 @@ public class UserController {
 
     @PostMapping("/transferAmount")
     @ResponseBody
-    public BankResponse transferAmount(@RequestBody TransferRequest transferRequest){
+    public BankResponse transferAmount(@RequestBody TransferRequest transferRequest) throws UserNotFoundException{
         return userService.transferAmount(transferRequest);
     }
 

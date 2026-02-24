@@ -238,7 +238,7 @@ public class UserServiceImplementation implements UserService{
                         .subject("DEBIT ALERT !")
                         .recipient(findSenderUser.getEmail())
                         .messageBody("The Sum of : " + transferRequest.getAmount() + " has been deducted from your Account \n" +
-                                "Your Current Balance is : " + findSenderUser.getAccountBalance())
+                                "Your Current Balance is : " + "$" + findSenderUser.getAccountBalance())
                         .build();
 
                 emailService.sendEmailAlert(emailDetailsDebit);
@@ -248,7 +248,7 @@ public class UserServiceImplementation implements UserService{
                         .subject("CREDIT ALERT !")
                         .recipient(receiverTransferUser.getEmail())
                         .messageBody("The Sum of : " + transferRequest.getAmount() + " has been sent from your Account \n" +
-                                "Your current Balance is : " + receiverTransferUser.getAccountBalance())
+                                "Your current Balance is : " + "$" + receiverTransferUser.getAccountBalance())
                         .build();
                 emailService.sendEmailAlert(emailDetailsCredit);
                 // return the final BankResponse after the transfer Operation !
