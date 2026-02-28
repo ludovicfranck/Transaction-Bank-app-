@@ -28,7 +28,8 @@ public class AccountUtils {
     public static final String ACCOUNT_SOURCE_NUMBER_NOT_FOUND_MESSAGE = "The Source  Account Number provided for the transfer doesn't exist !";
     public static final String ACCOUNT_DESTINATION_NUMBER_FOUND_CODE = "008";
     public static final String ACCOUNT_DESTINATION_NUMBER_FOUND_MESSAGE = "The Account Number provided for the account to credit was successfully find !";
-
+    public static final String ACCOUNT_DESTINATION_NUMBER_NOT_FOUND_CODE = "009";
+    public static final String ACCOUNT_DESTINATION_NUMBER_NOT_FOUND_MESSAGE = "The Destination Account Number Provided for the Transfer operation wasn't found !";
     public static String generateAccountNumber(){
 
         Year year = Year.now();
