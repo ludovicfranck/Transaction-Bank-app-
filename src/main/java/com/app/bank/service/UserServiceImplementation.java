@@ -241,7 +241,7 @@ public class UserServiceImplementation implements UserService{
                     EmailDetails emailDetailsCredit = EmailDetails.builder()
                             .subject("CREDIT ALERT") // this is for the receiver ...
                             .recipient(receiverTransferUser.getEmail())
-                            .messageBody("The Sum of : " + transferRequest.getAmount() + " has been sent from your Account \n" +
+                            .messageBody("The Sum of : $" + transferRequest.getAmount() + " has been sent from your Account \n" +
                                     "Your Current Balance is : " + "$" + receiverTransferUser.getAccountBalance() + "\n" +
                                     "Sender name : " + findSenderUser.getFirstName() + " " + findSenderUser.getLastName())
                             .build();
@@ -260,7 +260,4 @@ public class UserServiceImplementation implements UserService{
             }
         }
     }
-
-
-
 }
